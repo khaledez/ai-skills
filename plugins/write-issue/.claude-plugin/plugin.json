@@ -1,0 +1,13 @@
+{
+  "name": "write-issue",
+  "version": "0.1.0",
+  "description": "Create a well-structured GitHub issue with context, scope, requirements, subtasks, dependencies, testing notes, and a verifiable definition of done.",
+  "author": {
+    "name": "banan-tech",
+    "url": "https://github.com/banan-tech"
+  },
+  "homepage": "https://github.com/banan-tech/ai-skills",
+  "repository": "https://github.com/banan-tech/ai-skills",
+  "license": "MIT",
+  "keywords": ["github", "issues", "planning", "skill"]
+}

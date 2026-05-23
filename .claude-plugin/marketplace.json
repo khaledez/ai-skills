@@ -1,0 +1,23 @@
+{
+  "name": "banan-ai-skills",
+  "owner": {
+    "name": "banan-tech",
+    "url": "https://github.com/banan-tech"
+  },
+  "metadata": {
+    "description": "Reusable Claude Code skills for banan-tech projects — GitHub-issue authoring and end-to-end issue implementation.",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "write-issue",
+      "source": "./plugins/write-issue",
+      "description": "Create a well-structured GitHub issue with context, scope, requirements, subtasks, dependencies, testing notes, and a verifiable definition of done."
+    },
+    {
+      "name": "implement-issue",
+      "source": "./plugins/implement-issue",
+      "description": "Pipeline-orchestrate one or more GitHub issues from 'assigned' to 'PR open, ready for review' using isolated worktrees and TDD."
+    }
+  ]
+}
