@@ -1,7 +1,6 @@
-# banan-tech / ai-skills
+# khaledez / ai-skills
 
-Reusable [Claude Code](https://claude.com/claude-code) skills for banan-tech
-projects.
+Reusable AI skills 
 
 ## What's inside
 
@@ -28,17 +27,6 @@ ai-skills/
 Each skill is a single `SKILL.md` under a top-level `<name>/` directory. Drop
 the directory into your project's skills location (or symlink it) and the
 skill becomes available as `/<name>`.
-
-## Requirements
-
-- [Claude Code](https://claude.com/claude-code) — the CLI must be installed and
-  authenticated.
-- An issue tracker CLI or integration your project uses (e.g. `gh` for GitHub
-  Issues, the Linear CLI, etc.), authenticated.
-- `git`.
-- A repository with `CLAUDE.md` at its root (strongly recommended for
-  `/implementor` — it's how the skill learns the project's conventions).
-  `README.md` is a fallback if `CLAUDE.md` is absent.
 
 ## Usage
 
