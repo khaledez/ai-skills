@@ -1,48 +1,33 @@
 # banan-tech / ai-skills
 
 Reusable [Claude Code](https://claude.com/claude-code) skills for banan-tech
-projects, distributed as a Claude Code plugin marketplace.
+projects.
 
 ## What's inside
 
-| Plugin | Skill | What it does |
-|---|---|---|
-| `write-issue` | `/write-issue` | Drafts a well-structured GitHub issue (context, scope, requirements, subtasks, dependencies, testing notes, definition of done) and creates it via `gh`. |
-| `implement-issue` | `/implement-issue` | Pipeline-orchestrates one or more GitHub issues from "assigned" to "PR open, ready for review." Each issue runs in an isolated git worktree via a TDD workflow. |
+| Skill | What it does |
+|---|---|
+| `/write-issue` | Drafts a well-structured GitHub issue (context, scope, requirements, subtasks, dependencies, testing notes, definition of done) and creates it via `gh`. |
+| `/implementor` | Implements a single issue or ticket from "assigned" to "PR open, ready for review" using a TDD workflow. Tracker-agnostic — works with any issue tracker. |
 
-Both skills are repo-agnostic. They auto-detect the active repository with
-`gh repo view`, and the implementer reads the host project's `CLAUDE.md` for
-build commands, conventions, and hard rules.
+Both skills are repo-agnostic. `/write-issue` auto-detects the active
+repository with `gh repo view`; `/implementor` detects the repo via `git
+remote` and is tracker-agnostic (GitHub Issues, Linear, etc.). Both read the
+host project's `CLAUDE.md` for build commands, conventions, and hard rules.
 
-## Install
+## Structure
 
-In any project where you want these skills:
-
-```bash
-# 1) Add this marketplace
-claude plugin marketplace add banan-tech/ai-skills
-
-# 2) Install the plugins you want
-claude plugin install write-issue@banan-ai-skills
-claude plugin install implement-issue@banan-ai-skills
+```
+ai-skills/
+├── write-issue/
+│   └── SKILL.md
+└── implementor/
+    └── SKILL.md
 ```
 
-That's it — `/write-issue` and `/implement-issue` are now available in that
-project.
-
-To update later:
-
-```bash
-claude plugin marketplace update banan-ai-skills
-```
-
-To list / disable / remove:
-
-```bash
-claude plugin list
-claude plugin disable <plugin>@banan-ai-skills
-claude plugin uninstall <plugin>@banan-ai-skills
-```
+Each skill is a single `SKILL.md` under a top-level `<name>/` directory. Drop
+the directory into your project's skills location (or symlink it) and the
+skill becomes available as `/<name>`.
 
 ## Requirements
 
@@ -50,10 +35,10 @@ claude plugin uninstall <plugin>@banan-ai-skills
   authenticated.
 - [`gh`](https://cli.github.com/) — GitHub CLI, authenticated against the org
   whose repos you'll be working in (`gh auth login`).
-- `git` ≥ 2.5 (for `git worktree` support — used by `implement-issue`).
+- `git`.
 - A repository with `CLAUDE.md` at its root (strongly recommended for
-  `implement-issue` — it's how the Implementer learns the project's
-  conventions). `README.md` is a fallback if `CLAUDE.md` is absent.
+  `/implementor` — it's how the skill learns the project's conventions).
+  `README.md` is a fallback if `CLAUDE.md` is absent.
 
 ## Usage
 
@@ -72,63 +57,27 @@ The skill walks through:
 4. Present the draft for your approval.
 5. Create the issue on GitHub and return the URL.
 
-### `/implement-issue`
+### `/implementor`
 
 ```
-# Single issue
-/implement-issue #42
-/implement-issue https://github.com/<owner>/<repo>/issues/42
-
-# Multiple issues
-/implement-issue #42 #43 #44
-
-# Free-form
-/implement-issue let's knock out the three open audit-log issues
+/implementor #42
+/implementor https://<tracker>/<org>/<project>/issue/42
+/implementor 42
 ```
 
-The skill:
+The skill works directly in your current checkout and:
 
-1. Builds a dependency-aware pipeline across the requested issues.
-2. Asks you to pick a concurrency mode (sequential / pair / quad / full).
-3. For each issue, spawns an **Implementer subagent in an isolated git
-   worktree** that:
-   - Claims the issue (label + assignment + comment)
-   - Investigates the codebase (reads `CLAUDE.md`, plans before coding)
-   - Implements in TDD (Red → Green → Repeat)
-   - Opens the PR with a test plan and `Closes #N`
-4. Surfaces a final report with PR links and merge order.
-
-## How the marketplace is structured
-
-```
-ai-skills/
-├── .claude-plugin/
-│   └── marketplace.json         # marketplace catalog
-└── plugins/
-    ├── write-issue/
-    │   ├── .claude-plugin/
-    │   │   └── plugin.json
-    │   └── skills/
-    │       └── write-issue/
-    │           └── SKILL.md
-    └── implement-issue/
-        ├── .claude-plugin/
-        │   └── plugin.json
-        └── skills/
-            └── implement-issue/
-                └── SKILL.md
-```
-
-References:
-- [Claude Code plugin marketplaces](https://code.claude.com/docs/en/plugin-marketplaces)
-- [Claude Code plugins](https://code.claude.com/docs/en/plugins)
-- [Claude Code skills](https://code.claude.com/docs/en/skills)
+1. Resolves the ticket and the active repo.
+2. Claims the ticket (status/label + assignment + comment).
+3. Investigates the codebase (reads `CLAUDE.md`, plans before coding).
+4. Implements in TDD (Red → Green → Repeat).
+5. Opens the PR with a test plan and a link that closes the ticket.
 
 ## Contributing
 
-Both skills are written as a single `SKILL.md` per plugin — open a PR with the
-edit and a short rationale. If you find banan-platform-specific assumptions
-leaking back in, that's a bug — file an issue.
+Both skills are written as a single `SKILL.md` — open a PR with the edit and
+a short rationale. If you find banan-platform-specific assumptions leaking back
+in, that's a bug — file an issue.
 
 ## License
 
