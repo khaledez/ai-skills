@@ -72,7 +72,8 @@ not automatically deletable; the authoring gate still rejects new ones.
 
 Before judging a candidate, read the complete test and production owner, its
 entry point, callers, callees, sibling implementations, overlapping tests, CI
-routing, and relevant history. Read root and scoped `AGENTS.md` files first.
+routing, and relevant history. Read the host project's root and scoped
+`CLAUDE.md` / `AGENTS.md` files first.
 When the test claims dependency-backed behavior, inspect the dependency source
 or types directly.
 
@@ -81,19 +82,21 @@ or types directly.
 Keep discovery read-only and report evidence before editing. For broad scope,
 run parallel discovery lanes when available:
 
-- core and packages (`src/`, `packages/`);
-- plugins (`extensions/`);
+- core source and shared packages or libraries;
+- plugins, extensions, or other add-on modules, if the project has them;
 - UI, apps, scripts, and tooling;
 - a cross-cutting pattern sweep.
+
+Map these lanes onto the project's actual layout before starting.
 
 Prefer a few high-confidence candidates over a large
 speculative inventory. Hunt for the [junk patterns](#junk-patterns).
 
 ## Retention bar
 
-Keep a test when it independently enforces a public API, plugin SDK, protocol,
-config, migration, storage, security, platform, default, prompt-byte, generated
-cross-language, package, release, or architecture contract. Also keep:
+Keep a test when it independently enforces a public API, SDK, protocol,
+config, migration, storage, security, platform, default, serialized-output,
+generated cross-language, package, release, or architecture contract. Also keep:
 
 - call ordering when order is observable behavior;
 - regressions with a credible failure mode;
@@ -132,27 +135,27 @@ to increase deletion counts.
 
 ## Validation
 
-Never edit source or tests while Vitest is running in the checkout. Follow
-`$openclaw-testing`; route heavy proof through its `$crabbox` rules.
+Use the test, format, and lint commands from the host project's `CLAUDE.md`
+(or its README, package manifest, or CI config). Never edit source or tests
+while a test runner or watcher is running in the checkout.
 
-1. Run the smallest owner and sibling tests with
-   `node scripts/run-vitest.mjs <path-or-filter>`.
+1. Run the smallest owner and sibling tests, filtered to the changed paths.
 2. For removed source greps or plan assertions, run the executable script or
    dry-run that owns the real contract.
 3. Run targeted formatting, then `git diff --check`.
-4. Classify with
-   `node scripts/check-changed.mjs --dry-run -- <changed-paths>`, then run the
-   actual changed gate required by repository policy.
+4. Run the changed-files or full gate the project's CI requires for these
+   paths.
 5. Inspect `git diff --numstat`; report production/tooling separately from
    tests and test support.
-6. After final audit edits, run mandatory `$autoreview`.
+6. After final audit edits, review the full diff (e.g. with a code-review
+   skill, if one is available) before handing off.
 
 ## Landing and continuation
 
-Commit, push, open a PR, or land only when authorized. Use
-`$openclaw-pr-maintainer` and the repository `scripts/pr` flow. Land one
-coherent PR at a time; after landing, refresh from current `main` and rerun
-read-only discovery for the next high-confidence batch.
+Commit, push, open a PR, or land only when authorized, following the project's
+PR conventions. Land one coherent PR at a time; after landing, refresh from
+the default branch and rerun read-only discovery for the next high-confidence
+batch.
 
 ## Handoff
 

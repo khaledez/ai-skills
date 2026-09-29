@@ -10,9 +10,9 @@ Reusable AI skills
 | `/implementor` | Implements a single issue or ticket from "assigned" to "PR open, ready for review" using a TDD workflow. Tracker-agnostic — works with any issue tracker. |
 | `/test-audit` | Authoring gate for new tests plus an audit workflow for low-value, implementation-coupled, or duplicative tests and the test-only production seams they demand. Adapted from [OpenClaw](https://github.com/openclaw/openclaw/tree/main/.agents/skills/test-audit). |
 
-Both skills are repo-agnostic and tracker-agnostic (GitHub Issues, Linear,
-etc.). They detect the active repo via `git remote -v` and use whatever
-CLI or integration your project uses for ticket operations. Both read the
+All skills are repo-agnostic. `/spec` and `/implementor` are also
+tracker-agnostic (GitHub Issues, Linear, etc.). They detect the active repo via `git remote -v` and use whatever
+CLI or integration your project uses for ticket operations. All read the
 host project's `CLAUDE.md` for build commands, conventions, and hard rules.
 
 ## Structure
@@ -67,7 +67,7 @@ The skill works directly in your current checkout and:
 
 ## Contributing
 
-Both skills are written as a single `SKILL.md` — open a PR with the edit and
+Each skill is written as a single `SKILL.md` — open a PR with the edit and
 a short rationale. If you find banan-platform-specific assumptions leaking back
 in, that's a bug — file an issue.
 
