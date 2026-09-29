@@ -8,6 +8,7 @@ Reusable AI skills
 |---|---|
 | `/spec` | Drafts a well-structured issue or ticket (context, scope, requirements, subtasks, dependencies, testing notes, definition of done) and creates it in the project's issue tracker. Tracker-agnostic — works with any issue tracker. |
 | `/implementor` | Implements a single issue or ticket from "assigned" to "PR open, ready for review" using a TDD workflow. Tracker-agnostic — works with any issue tracker. |
+| `/test-audit` | Authoring gate for new tests plus an audit workflow for low-value, implementation-coupled, or duplicative tests and the test-only production seams they demand. Adapted from [OpenClaw](https://github.com/openclaw/openclaw/tree/main/.agents/skills/test-audit). |
 
 Both skills are repo-agnostic and tracker-agnostic (GitHub Issues, Linear,
 etc.). They detect the active repo via `git remote -v` and use whatever
@@ -20,7 +21,9 @@ host project's `CLAUDE.md` for build commands, conventions, and hard rules.
 ai-skills/
 ├── spec/
 │   └── SKILL.md
-└── implementor/
+├── implementor/
+│   └── SKILL.md
+└── test-audit/
     └── SKILL.md
 ```
 
